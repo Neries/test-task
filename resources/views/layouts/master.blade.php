@@ -33,7 +33,6 @@
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
 <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
-<script src="{{ asset('js/tree.js') }}"></script>
 
 </body>
 </html>
