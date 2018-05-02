@@ -7,7 +7,7 @@ use  Illuminate\Database\Eloquent\Collection as Collection;
 
 class EmployeesTableSeader extends Seeder
 {
-    private $numberOfEmployees = 500;
+    private $numberOfEmployees = 50;
     private $depth = 5;
     private $ids = [];
     private $suitableIds = [];
@@ -57,7 +57,6 @@ class EmployeesTableSeader extends Seeder
         $lastRecord = $allGeneratedData->last();
 
         $countHierarchies = $this->countDepth($lastRecord->id);
-        var_dump($countHierarchies);
         if ($countHierarchies < $this->depth - 2) {
             $this->suitableIds[] = $lastRecord->id;
         }

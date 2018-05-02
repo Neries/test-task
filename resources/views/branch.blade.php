@@ -1,20 +1,20 @@
 <ul class="ul-treefree">
     @foreach($children as $child)
         <li>
-                <a class="list-group-item flex-column align-items-start">
-                    <kbd>ID</kbd>
-                    {{ ' '.$child->id }}
-                    <br>
-                    <kbd>ФИО</kbd>
-                    {{ ' '.$child->last_name.' '.$child->first_name.' '.$child->patronymic  }}<br>
-                    <kbd>должность</kbd>
+            <div class="list-group-item flex-column align-items-start">
+                {{--<kbd>ID</kbd>--}}
+                {{--{{ ' '.$child->id }}--}}
+                {{--<br>--}}
+                <kbd>ФИО</kbd>
+                {{ ' '.$child->last_name.' '.$child->first_name.' '.$child->patronymic  }}<br>
+                <kbd>должность</kbd>
 
-                    <nobr class="text-primary">{{ ' '.$child->position  }}</nobr>
-                </a>
+                <nobr class="text-primary">{{ ' '.$child->position  }}</nobr>
+            </div>
 
-                @if(!empty($child->children))
-                    @include('branch',['children' => $child->children])
-                @endif
+            @if(!empty($child->children))
+                @include('branch',['children' => $child->children])
+            @endif
         </li>
     @endforeach
 </ul>

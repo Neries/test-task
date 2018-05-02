@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name', 100);
             $table->string('patronymic', 100);
             $table->string('position', 255);
-            $table->timestamp('employment_date')->default(DB::raw('NOW()'));
+            $table->timestamp('employment_date');
             $table->decimal('salary',10,2);
             $table->integer('chief_id')->nullable()->default(null);
         });

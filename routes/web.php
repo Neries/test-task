@@ -12,9 +12,9 @@
 */
 
 
-
 Route::get('/', 'EmployeeController@tree');
-Route::get('/employees', 'EmployeeController@employeesList');
+Route::get('/employees', 'EmployeeController@ajax')->name('ajax');
+//Route::get('/employees', 'EmployeeController@employeesList');
 
 
 

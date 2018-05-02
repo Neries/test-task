@@ -12,14 +12,13 @@
                         @foreach($employees as $i => $employee)
                             <li>
                                 <div class="list-group-item flex-column align-items-start">
-                                    <a class="list-group-item">
+                                    <div class="list-group-item">
                                         <kbd>ФИО</kbd>
                                         {{ ' '.$employee->last_name.' '.$employee->first_name.' '.$employee->patronymic }}
                                         <br>
                                         <kbd>должность</kbd>
                                         <nobr class="text-primary"> {{ ' '.$employee->position }} </nobr>
-
-                                    </a>
+                                    </div>
 
                                     @if(!empty($employee->children))
                                         @include('branch',['children' => $employee->children])
@@ -36,6 +35,6 @@
 
 
 
-{{--    <script src="{{ asset('js/treeview.js') }}"></script>--}}
+    {{--<script src="{{ asset('js/treeview.js') }}"></script>--}}
 
 @endsection

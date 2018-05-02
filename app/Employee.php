@@ -11,6 +11,8 @@ class Employee extends Model
         'id',
         'chief_id',
     ];
+
+
     public function children() {
         return $this->hasMany(static::class, 'chief_id')->orderBy('id', 'asc');
     }

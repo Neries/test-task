@@ -1,48 +1,48 @@
 @extends ('layouts.master')
 
 @section ('content')
-<h1>Employees page</h1>
+    <h1>Employees page</h1>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 
-
-<table  id="example" class="table table-striped table-condensed table-bordered table-hover">
-    <thead>
-    <tr class="info">
-        <th><a href="#">ID</a></th>
-        <th><a href="#">Фамилия</a></th>
-        <th><a href="#">Имя</a></th>
-        <th><a href="#">Отчество</a></th>
-        <th><a href="#">Должность</a></th>
-        <th><a href="#">Дата приема на работу</a></th>
-        <th><a href="#">Зарплата</a></th>
-    </tr>
-    </thead>
-
-    <tbody>
-    @foreach($employees as $item)
-        <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->last_name }}</td>
-            <td>{{ $item->first_name }}</td>
-            <td>{{ $item->patronymic }}</td>
-            <td>{{ $item->position }}</td>
-            <td>{{ date("Y-m-d", strtotime($item->employment_date)) }}</td>
-            <td>{{ $item->salary }}</td>
+    <table id="datatable" class="table table-striped table-condensed table-bordered table-hover">
+        <thead>
+        <tr class="info">
+            <th>ID</th>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Patronymic</th>
+            <th>Position</th>
+            <th>Employment date</th>
+            <th>Salary</th>
         </tr>
+        </thead>
 
-    @endforeach
+        <tbody>
+        </tbody>
+    </table>
 
-    </tbody>
-</table>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
-<script>
-    $(function(){
-        $("#example").dataTable();
-    })
-</script>
+    <script type="text/javascript" charset="utf8"
+            src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
 
-
+        $(document).ready(function () {
+            $('#datatable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ route('api.employees.index') }}",
+                "columns": [
+                    {"data": "id"},
+                    {"data": "last_name"},
+                    {"data": "first_name"},
+                    {"data": "patronymic"},
+                    {"data": "position"},
+                    {"data": "employment_date"},
+                    {"data": "salary"}
+                ]
+            });
+        });
+    </script>
 
 @endsection
 

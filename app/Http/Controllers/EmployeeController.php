@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+
 class EmployeeController extends Controller
 {
     /**
@@ -63,6 +65,11 @@ class EmployeeController extends Controller
         }
 
         return $branch;
+    }
+
+    public function ajax()
+    {
+        return view('employees');
     }
 
 
