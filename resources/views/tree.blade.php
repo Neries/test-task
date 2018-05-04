@@ -9,10 +9,10 @@
                 <div class="col-md-12">
                     <h1>Employees List</h1>
                     <ul id="tree1">
-                        @foreach($employees as $i => $employee)
-                            <li>
+                    @foreach($employees as $i => $employee)
+                            <li style="list-style-type: none">
                                 <div class="list-group-item flex-column align-items-start">
-                                    <div class="list-group-item">
+                                    <div id="table" class="list-group-item" data-id="{{ $employee->id }}">
                                         <kbd>ФИО</kbd>
                                         {{ ' '.$employee->last_name.' '.$employee->first_name.' '.$employee->patronymic }}
                                         <br>
@@ -21,7 +21,7 @@
                                     </div>
 
                                     @if(!empty($employee->children))
-                                        @include('branch',['children' => $employee->children])
+                                    @include('branch',['children' => $employee->children])
                                     @endif
                                 </div>
                             </li>
@@ -32,9 +32,40 @@
         </div>
     </div>
 
+    <script>
+        {{--$('#table').on('click', function () {--}}
+            {{--var parent = $(this);--}}
 
+            {{--var data = {};--}}
+            {{--data['_token'] = "{{ csrf_token() }}";--}}
+            {{--data['id'] = parent.data('id');--}}
 
+            {{--$.ajax({--}}
+                {{--type: "POST",--}}
+                {{--url: '{{ route('child') }}',--}}
+                {{--data: data,--}}
+                {{--success: function (response) {--}}
+                    {{--$.each(response, function (i, item) {--}}
+                        {{--var block = $('<div>', {--}}
+                            {{--'id': "table",--}}
+                            {{--'class': "list-group-item",--}}
+                            {{--'data-id': item.id--}}
+                        {{--});--}}
+                        {{--block.append($('<kbd>', {text: 'ФИО'}));--}}
+                        {{--block.append(' ' + item.last_name + ' ' + item.first_name + ' ' + item.patronymic);--}}
+                        {{--block.append('<br>');--}}
+                        {{--block.append($('<kbd>', {text: 'должность'}));--}}
+                        {{--block.append($('<nobr>', {'class': 'text-primary', text: item.position}));--}}
+                        {{--parent.append(block);--}}
+                    {{--})--}}
 
-    {{--<script src="{{ asset('js/treeview.js') }}"></script>--}}
+                {{--},--}}
+                {{--dataType: 'json'--}}
+            {{--});--}}
+
+        {{--});--}}
+
+    </script>
+
 
 @endsection

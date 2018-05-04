@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-
 class EmployeeController extends Controller
 {
+
     /**
      * Display a listing of the employees.
      *
@@ -18,12 +18,20 @@ class EmployeeController extends Controller
      */
     public function employeesList()
     {
-
-        $employees = Employee::with('children')->get();
-
-        return view('employees', ['employees' => $employees]);
+        return view('employees');
     }
 
+
+    /**
+     *TODO: write comment
+     *
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
+    public function getEmployees()
+    {
+        $query = Employee::select('id', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary');
+        return datatables($query)->make(true);
+    }
 
     /**
      *
@@ -33,12 +41,13 @@ class EmployeeController extends Controller
      */
     public function tree()
     {
-        $employees = Employee::all();
-
+//        $employees = Employee::all();
+        $employees = Employee::limit(10)->get();
         $tree = $this->buildTree($employees);
-
         return view('tree', ['employees' => $tree]);
+
     }
+
 
     /**
      * creates a multi-dimensional array
@@ -48,7 +57,7 @@ class EmployeeController extends Controller
      * @param int $parentId
      * @return array
      */
-    private function buildTree(Collection $elements, $parentId = 0)
+    private function buildTree($elements, $parentId = 0)
     {
         $branch = [];
 
@@ -67,11 +76,6 @@ class EmployeeController extends Controller
         return $branch;
     }
 
-    public function ajax()
-    {
-        return view('employees');
-    }
-
 
     /**
      * Show the form for creating a new resource.
@@ -83,59 +87,57 @@ class EmployeeController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Employee $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Employee $employee)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Employee $employee
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit($id)
     {
-        //
+        $worker = Employee::find($id);
+        return view('edit', ['employee' => $worker]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update or remove specified resource in storage
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Employee $employee
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function update(Request $request, Employee $employee)
+    public function updateOrDelete(Request $request, $id)
     {
-        //
+        if ($request->save){
+            Employee::findOrFail($id)->update(
+                ['last_name' => $request->last_name,
+                 'first_name' => $request->first_name,
+                 'patronymic' => $request->patronymic,
+                 'position' => $request->position,
+                 'employment_date' => $request->employment_date,
+                 'salary' => $request->salary,
+                 'chief_id' => $request->chief_id,
+                    ]
+                );
+        }
+        elseif ($request->delete){
+            Employee::findOrFail($id)->delete();
+        }
+        return view('employees');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Employee $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
-    {
-        //
-    }
+    //    public function getChild()
+//    {
+//        $childs = Employee::where('chief_id', $_POST['id'])->select
+//        (
+//            'id',
+//            'last_name',
+//            'first_name',
+//            'patronymic',
+//            'position'
+//        )->get()->toArray();
+//        return response()->json($childs);
+//
+//    }
 }

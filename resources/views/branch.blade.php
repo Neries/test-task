@@ -2,9 +2,6 @@
     @foreach($children as $child)
         <li>
             <div class="list-group-item flex-column align-items-start">
-                {{--<kbd>ID</kbd>--}}
-                {{--{{ ' '.$child->id }}--}}
-                {{--<br>--}}
                 <kbd>ФИО</kbd>
                 {{ ' '.$child->last_name.' '.$child->first_name.' '.$child->patronymic  }}<br>
                 <kbd>должность</kbd>

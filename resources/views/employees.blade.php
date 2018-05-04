@@ -3,7 +3,8 @@
 @section ('content')
     <h1>Employees page</h1>
 
-    <link href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+
 
     <table id="datatable" class="table table-striped table-condensed table-bordered table-hover">
         <thead>
@@ -15,6 +16,7 @@
             <th>Position</th>
             <th>Employment date</th>
             <th>Salary</th>
+            <th>Edit</th>
         </tr>
         </thead>
 
@@ -22,15 +24,20 @@
         </tbody>
     </table>
 
-    <script type="text/javascript" charset="utf8"
-            src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script>
 
         $(document).ready(function () {
-            $('#datatable').DataTable({
+            var table = $('#datatable').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ route('api.employees.index') }}",
+                "ajax": {
+                    "url": "{{ route('employees.json') }}",
+                    "type": "POST",
+                    "data": {"_token": "{{ csrf_token() }}"}
+                },
                 "columns": [
                     {"data": "id"},
                     {"data": "last_name"},
@@ -38,10 +45,17 @@
                     {"data": "patronymic"},
                     {"data": "position"},
                     {"data": "employment_date"},
-                    {"data": "salary"}
+                    {"data": "salary"},
+                    {"defaultContent": "<a id ='edit' class='btn btn-info btn-sm'>Edit</a>"}
                 ]
             });
+            $('#datatable tbody').on('click', '[id*=edit]', function () {
+                var data = table.row($(this).parents('tr')).data();
+                var id = data.id;
+                window.location.href = "{{ route('employees') }}" + '/edit/' + id;
+            });
         });
+
     </script>
 
 @endsection

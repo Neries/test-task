@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     public $timestamps = false;
-    protected $fillable = [
-        'id',
-        'chief_id',
-    ];
+    protected $guarded = [];
 
 
     public function children() {
