@@ -130,12 +130,40 @@ class EmployeeController extends Controller
      */
     public function create(Request $request)
     {
-//        dd($request->all());
-//        if ($request->hasFile('file')){
-//            dd('asdf');
+
+//        $this->validate($request, [
+//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+
+        $file = $request->file('image');
+
+        $ext = $file->getClientOriginalName();
+
+        $file->storeAs('/avatars',$ext);
+
+//        if ($request->file('image')) {
+//            if ($oldImage = Model::find($itemId)->image) {
+//                if(file_exists($oldImage)) @unlink($oldImage);
+//            }
+//            $extension = $request->file('image')->getClientOriginalExtension();
+//            $imageName = rand(1000, 999999).'_'.time().'.'.$extension;
+//            if (!is_dir("img/{$this->getPrefix()}")) mkdir("img/{$this->getPrefix()}");
+//            $request->file('image')->move(base_path() . "/public/img/{$this->getPrefix()}/", $imageName);
+//            $data['image'] = "img/{$this->getPrefix()}/$imageName";
 //        }
-        Employee::create($request   ->all());
-        return redirect('employees');
+
+
+//        if ($request->hasFile('image')) {
+//            dd('DONE');
+//            $image = $request->file('image');
+//            $name = time().'.'.$image->getClientOriginalExtension();
+//            $destinationPath = public_path('/images');
+//            $image->move($destinationPath, $name);
+//            $this->save();
+//
+//        }
+//        Employee::create($request   ->all());
+//        return redirect('employees');
     }
 
 
@@ -148,7 +176,12 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $worker = Employee::find($id);
-        return view('edit', ['employee' => $worker]);
+        $data = ['employee' => $worker];
+        if ($chief = Employee::find($worker->chief_id)) {
+            $data['chief'] = ['text' => $this->prepareDropdownName($chief), 'id' => $chief->id];
+        }
+
+        return view('edit', $data);
     }
 
     /**
@@ -195,6 +228,8 @@ class EmployeeController extends Controller
 
 
     /**
+     * TODO: chief himself
+     *
      * @param Request $request
      * @return array
      */
@@ -210,13 +245,24 @@ class EmployeeController extends Controller
         foreach ($employees as $employee) {
             $resultData[] = [
                 'id' => $employee['id'],
-                'text' => "$employee[last_name] " .
-                    mb_substr($employee['first_name'], 0, 1) . "." . mb_substr($employee['patronymic'], 0, 1 ) .
-                    ", $employee[position]",
+                'text' => $this->prepareDropdownName($employee),
             ];
         }
 
         return ['results' => $resultData ?? []];
     }
+
+    /**
+     * @param $data
+     * @return string
+     */
+    private function prepareDropdownName($data)
+    {
+        return "$data[last_name] " .
+            mb_substr($data['first_name'], 0, 1) . "." . mb_substr($data['patronymic'], 0, 1 ) .
+            ", $data[position]";
+    }
+
+
 
 }

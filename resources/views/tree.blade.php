@@ -23,7 +23,7 @@
                                     @if(!empty($employee->children))
                                     @include('branch',['children' => $employee->children])
                                     @endif
-
+                                </div>
                             </li>
                         @endforeach
                     </ul>

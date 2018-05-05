@@ -15,7 +15,8 @@
                     </div>
                     <div class="panel-body" style="background: #f9f9f9">
                         <form method="POST"
-                              action="{{ isset($employee) ? route('edit', ['id' => $employee->id]) : route('create') }}">
+                              action="{{ isset($employee) ? route('edit', ['id' => $employee->id]) : route('create') }}"
+                              enctype= "multipart/form-data">
 
                             {{ csrf_field() }}
 
@@ -25,7 +26,7 @@
                                          class="form-group img-thumbnail" style="max-width: 200px; max-height: 200px" alt="avatar">
 
                                     <label class="form-group btn-block btn btn-primary">
-                                        Upload photo <input id="imgInp" name="file" type="file" hidden>
+                                        Upload photo <input type="file" id="imgInp" name="image"  hidden>
                                     </label>
                                 </div>
                             </div>
@@ -75,16 +76,12 @@
 
                             <div class="form-group col-xs-8"> <!-- Chief_Id -->
                                 <label for="chief_id" class="control-label">Chief</label>
-                                <select class="form-control chief-list-ajax" id="chief_id"  name="chief_id"></select>
+                                <select class="form-control chief-list-ajax" id="chief_id"  name="chief_id">
+                                    @if(!empty($chief))
+                                        <option value="{{ $chief['id'] }}">{{ $chief['text'] }}</option>
+                                    @endif
+                                </select>
                             </div>
-
-                            {{--<div class="form-group col-xs-2"> <!-- Chief_Id -->--}}
-                                {{--<label for="chief_id" class="control-label">Chief Id</label>--}}
-                                {{--<input type="number" step="1" class="form-control" id="chief_id" name="chief_id"--}}
-                                       {{--placeholder="12" value="{{ isset($employee) ? $employee->chief_id : ''}}"--}}
-                                       {{--required>--}}
-                            {{--</div>--}}
-
 
                             <div class="form-group"> <!-- Buttons -->
                                 <input type="submit" value="Save" class="btn btn-info btn-block">
@@ -96,6 +93,7 @@
             </div>
         </div>
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
@@ -121,6 +119,8 @@
             }
         });
     </script>
+
+
 
 
 

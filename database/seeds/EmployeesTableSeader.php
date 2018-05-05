@@ -27,7 +27,7 @@ class EmployeesTableSeader extends Seeder
         for ($i = 0; $i < $this->numberOfEmployees; $i++) {
             $gender = $faker->randomElements(['male', 'female'])[0];
             $newItem = \App\Employee::create([
-                'last_name' => $gender === 'male' ? $faker->lastName : $faker->lastName . 'a',
+                'last_name' => $gender === 'male' ? $faker->lastName : $faker->lastName . 'а',
                 'first_name' => $faker->firstName($gender),
                 'patronymic' => $faker->middleName($gender),
                 'position' => $faker->jobTitle,

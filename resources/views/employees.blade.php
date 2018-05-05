@@ -2,7 +2,7 @@
 
 @section ('content')
     <h1>Employees page</h1>
-
+{{--TODO: alert delete--}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
 
 
@@ -39,7 +39,7 @@
                     data: {"_token": "{{ csrf_token() }}"}
                 },
                 columns: [
-                    {data: "id"},
+                    {data: "id",},
                     {data: "last_name"},
                     {data: "first_name"},
                     {data: "patronymic"},
@@ -47,7 +47,8 @@
                     {data: "employment_date"},
                     {data: "salary"},
                     {defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'><i class='glyphicon glyphicon-edit'></i></a>" +
-                        "<a id ='del' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-trash'></i></a></div>"}
+                        "<a id ='del' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-trash'></i></a></div>", "width": "54px"}
+
                 ]
             });
             $('#datatable tbody').on('click', '[id*=edit]', function () {
