@@ -6,6 +6,7 @@ use App\Employee;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 
 class EmployeeController extends Controller
@@ -118,7 +119,7 @@ class EmployeeController extends Controller
      */
     public function createForm()
     {
-        return view('create');
+        return view('edit');
     }
 
     /**
@@ -129,7 +130,11 @@ class EmployeeController extends Controller
      */
     public function create(Request $request)
     {
-        Employee::create($request->all());
+//        dd($request->all());
+//        if ($request->hasFile('file')){
+//            dd('asdf');
+//        }
+        Employee::create($request   ->all());
         return redirect('employees');
     }
 
@@ -160,12 +165,7 @@ class EmployeeController extends Controller
         return redirect('employees');
     }
 
-    /**
-     * Remove specified resource in storage
-     *
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
+
     /**
      * Remove specified resource in storage
      *
@@ -194,20 +194,29 @@ class EmployeeController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function search(Request $request)
+    {
+        $queryString = $request->get('q');
+        $employees = Employee::where('first_name', 'LIKE', "%$queryString%")
+            ->orWhere('last_name', 'LIKE', "%$queryString%")
+            ->orWhere('patronymic', 'LIKE', "%$queryString%")
+            ->orWhere('position', 'LIKE', "%$queryString%")
+            ->get(['id', 'first_name', 'last_name', 'patronymic', 'position']);
 
+        foreach ($employees as $employee) {
+            $resultData[] = [
+                'id' => $employee['id'],
+                'text' => "$employee[last_name] " .
+                    mb_substr($employee['first_name'], 0, 1) . "." . mb_substr($employee['patronymic'], 0, 1 ) .
+                    ", $employee[position]",
+            ];
+        }
 
+        return ['results' => $resultData ?? []];
+    }
 
-    //    public function getChild()
-//    {
-//        $childs = Employee::where('chief_id', $_POST['id'])->select
-//        (
-//            'id',
-//            'last_name',
-//            'first_name',
-//            'patronymic',
-//            'position'
-//        )->get()->toArray();
-//        return response()->json($childs);
-//
-//    }
 }

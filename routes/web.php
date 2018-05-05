@@ -30,7 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/employees/create', 'EmployeeController@createForm')->name('createForm');
     Route::post('/employees/create', 'EmployeeController@create')->name('create');
 
-
+    Route::get('/employees/search', 'EmployeeController@search')->name('filterEmployees');
 });
 Auth::routes();
 
