@@ -16,7 +16,7 @@
             <th>Position</th>
             <th>Employment date</th>
             <th>Salary</th>
-            <th>Edit</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -46,8 +46,8 @@
                     {data: "position"},
                     {data: "employment_date"},
                     {data: "salary"},
-                    {defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'>Edit</a>" +
-                        "<a id ='del' class='btn btn-danger btn-sm'>Del</a></div>"}
+                    {defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'><i class='glyphicon glyphicon-edit'></i></a>" +
+                        "<a id ='del' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-trash'></i></a></div>"}
                 ]
             });
             $('#datatable tbody').on('click', '[id*=edit]', function () {

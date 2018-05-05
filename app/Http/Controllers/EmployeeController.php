@@ -166,11 +166,33 @@ class EmployeeController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
+    /**
+     * Remove specified resource in storage
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function delete($id)
     {
-        Employee::findOrFail($id)->delete();
+        $employee = Employee::findOrFail($id);
+        $this->redistributeChildren($employee);
+        $employee->delete();
+
         return redirect('employees');
     }
+
+    /**
+     * @param Employee $employee
+     */
+    private function redistributeChildren(Employee $employee)
+    {
+        $children = $employee->children();
+        $randomChiefs = Employee::inRandomOrder()->take($children->count())->get();
+        $children->each(function($child, $key) use ($randomChiefs) {
+            $child->update(['chief_id' => $randomChiefs[$key]->id]);
+        });
+    }
+
 
 
 
