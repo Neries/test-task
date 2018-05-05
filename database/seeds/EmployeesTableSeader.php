@@ -7,7 +7,7 @@ use  Illuminate\Database\Eloquent\Collection as Collection;
 
 class EmployeesTableSeader extends Seeder
 {
-    private $numberOfEmployees = 5000;
+    private $numberOfEmployees = 10000;
     private $depth = 5;
     private $ids = [];
     private $suitableIds = [];

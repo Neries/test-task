@@ -49,6 +49,40 @@ class EmployeeController extends Controller
     }
 
 
+
+    public function test(){
+//        $employees = Employee::all();
+//        $tree = $this->buildTree($employees);
+//        die("<pre>".print_r($tree,true)."</pre>");
+//        return json_encode($tree);
+
+        $rows = Employee::all()->toArray();
+       foreach ($rows as $row) {
+            $sub_data["id"] = $row["id"];
+            $sub_data["text"] = '<kbd>ФИО</kbd>'.
+                ' '. $row["last_name"] . ' ' . $row["first_name"] . ' ' . $row['patronymic'] .
+                ' '.'<kbd>должность</kbd><nobr class="text-primary">'.
+                ' '.$row['position'].'</nobr>';
+            $sub_data["parent_id"] = $row["chief_id"];
+            $data[] = $sub_data;
+        }
+        foreach ($data as $key => &$value) {
+            $output[$value["id"]] = &$value;
+        }
+        foreach ($data as $key => &$value) {
+            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
+                $output[$value["parent_id"]]["nodes"][] = &$value;
+            }
+        }
+        foreach ($data as $key => &$value) {
+            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
+                unset($data[$key]);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * creates a multi-dimensional array
      * with parent-children
@@ -78,13 +112,25 @@ class EmployeeController extends Controller
 
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createForm()
     {
-        //
+        return view('create');
+    }
+
+    /**
+     * Creating a new employee
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function create(Request $request)
+    {
+        Employee::create($request->all());
+        return redirect('employees');
     }
 
 
@@ -101,31 +147,33 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Update or remove specified resource in storage
+     * Update specified resource in storage
      *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function updateOrDelete(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        if ($request->save){
-            Employee::findOrFail($id)->update(
-                ['last_name' => $request->last_name,
-                 'first_name' => $request->first_name,
-                 'patronymic' => $request->patronymic,
-                 'position' => $request->position,
-                 'employment_date' => $request->employment_date,
-                 'salary' => $request->salary,
-                 'chief_id' => $request->chief_id,
-                    ]
-                );
-        }
-        elseif ($request->delete){
-            Employee::findOrFail($id)->delete();
-        }
-        return view('employees');
+        Employee::find($id)->update($request->all());
+
+        return redirect('employees');
     }
+
+    /**
+     * Remove specified resource in storage
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function delete($id)
+    {
+        Employee::findOrFail($id)->delete();
+        return redirect('employees');
+    }
+
+
+
 
     //    public function getChild()
 //    {

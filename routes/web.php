@@ -21,15 +21,33 @@ Route::post('/', 'EmployeeController@getChild')->name('child');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/employees', 'EmployeeController@employeesList')->name('employees');
     Route::post('/employees', 'EmployeeController@getEmployees')->name('employees.json');
+
     Route::get('/employees/edit/{id}', 'EmployeeController@edit')->where(['id' => '[0-9]+'])->name('editForm');
-    Route::post('/employees/edit/{id}', 'EmployeeController@updateOrDelete')->where(['id' => '[0-9]+'])->name('edit');
+    Route::post('/employees/edit/{id}', 'EmployeeController@update')->where(['id' => '[0-9]+'])->name('edit');
+
+    Route::get('/employees/delete/{id}', 'EmployeeController@delete')->where(['id' => '[0-9]+'])->name('delete');
+
+    Route::get('/employees/create', 'EmployeeController@createForm')->name('createForm');
+    Route::post('/employees/create', 'EmployeeController@create')->name('create');
 
 
 });
-
-
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+
+
+
+
+
+
+
+Route::get('/test', function (){
+    return view('test');
+});
+
+Route::post('/test', 'EmployeeController@test')->name('test');
+
+
+

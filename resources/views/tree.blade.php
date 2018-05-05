@@ -12,7 +12,7 @@
                     @foreach($employees as $i => $employee)
                             <li style="list-style-type: none">
                                 <div class="list-group-item flex-column align-items-start">
-                                    <div id="table" class="list-group-item" data-id="{{ $employee->id }}">
+                                    <div  class="list-group-item" data-id="{{ $employee->id }}">
                                         <kbd>ФИО</kbd>
                                         {{ ' '.$employee->last_name.' '.$employee->first_name.' '.$employee->patronymic }}
                                         <br>
@@ -23,7 +23,7 @@
                                     @if(!empty($employee->children))
                                     @include('branch',['children' => $employee->children])
                                     @endif
-                                </div>
+
                             </li>
                         @endforeach
                     </ul>
@@ -31,6 +31,14 @@
             </div>
         </div>
     </div>
+
+
+    {{--'<div  class="list-group-item"><kbd>ФИО</kbd>'.--}}
+    {{--' '. $row["last_name"] . ' ' . $row["first_name"] . ' ' . $row['patronymic'] .--}}
+    {{--' '.'<kbd>должность</kbd><nobr class="text-primary">'.--}}
+    {{--' '.$row['position'].'</nobr></div>'--}}
+
+
 
     <script>
         {{--$('#table').on('click', function () {--}}

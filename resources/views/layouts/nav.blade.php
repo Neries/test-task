@@ -7,8 +7,14 @@
                 <li class="active"><a href="{{ route('home') }}"><span class="glyphicon glyphicon-home"
                                                      aria-hidden="true"></span> Home</a></li>
                 <li><a href="{{ route('employees') }}">
-                        <span class="glyphicon glyphicon" aria-hidden="true"></span> All</a></li>
+                        <span class="glyphicon  glyphicon-user" aria-hidden="true"></span> All</a></li>
+
+                <li><a href="{{ route('createForm') }}">
+                        <span class="glyphicon  glyphicon-plus" aria-hidden="true"></span> Create</a></li>
+
                 <li><a href="#"><span class="fa fa-envelope-o"></span> Contact</a></li>
+
+
             </ul>
 
             @guest

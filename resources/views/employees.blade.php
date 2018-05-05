@@ -31,22 +31,23 @@
 
         $(document).ready(function () {
             var table = $('#datatable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "{{ route('employees.json') }}",
-                    "type": "POST",
-                    "data": {"_token": "{{ csrf_token() }}"}
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('employees.json') }}",
+                    type: "POST",
+                    data: {"_token": "{{ csrf_token() }}"}
                 },
-                "columns": [
-                    {"data": "id"},
-                    {"data": "last_name"},
-                    {"data": "first_name"},
-                    {"data": "patronymic"},
-                    {"data": "position"},
-                    {"data": "employment_date"},
-                    {"data": "salary"},
-                    {"defaultContent": "<a id ='edit' class='btn btn-info btn-sm'>Edit</a>"}
+                columns: [
+                    {data: "id"},
+                    {data: "last_name"},
+                    {data: "first_name"},
+                    {data: "patronymic"},
+                    {data: "position"},
+                    {data: "employment_date"},
+                    {data: "salary"},
+                    {defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'>Edit</a>" +
+                        "<a id ='del' class='btn btn-danger btn-sm'>Del</a></div>"}
                 ]
             });
             $('#datatable tbody').on('click', '[id*=edit]', function () {
@@ -54,9 +55,19 @@
                 var id = data.id;
                 window.location.href = "{{ route('employees') }}" + '/edit/' + id;
             });
+
+            $('#datatable tbody').on('click', '[id*=del]', function () {
+                var data = table.row($(this).parents('tr')).data();
+                var id = data.id;
+                window.location.href = "{{ route('employees') }}" + '/delete/' + id;
+            });
         });
+
+
 
     </script>
 
+
 @endsection
+
 
