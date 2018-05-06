@@ -1,15 +1,17 @@
 @extends ('layouts.master')
 
+@section ('style')
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+@endsection
+
 @section ('content')
     <h1>Employees page</h1>
-{{--TODO: alert delete--}}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
-
-
+    {{--TODO: alert delete--}}
     <table id="datatable" class="table table-striped table-condensed table-bordered table-hover">
         <thead>
         <tr class="info">
             <th>ID</th>
+            <th>Foto</th>
             <th>Last name</th>
             <th>First name</th>
             <th>Patronymic</th>
@@ -24,9 +26,12 @@
         </tbody>
     </table>
 
+@endsection
+
+@section ('script')
     <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript"
-            src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
@@ -39,18 +44,28 @@
                     data: {"_token": "{{ csrf_token() }}"}
                 },
                 columns: [
-                    {data: "id",},
+                    {data: "id"},
+                    {data: "avatar", render: getImg, "width": "20px"},
                     {data: "last_name"},
                     {data: "first_name"},
                     {data: "patronymic"},
                     {data: "position"},
                     {data: "employment_date"},
                     {data: "salary"},
-                    {defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'><i class='glyphicon glyphicon-edit'></i></a>" +
-                        "<a id ='del' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-trash'></i></a></div>", "width": "54px"}
+                    {
+                        defaultContent: "<div class='btn-group'><a id ='edit' class='btn btn-info btn-sm'><i class='glyphicon glyphicon-edit'></i></a>" +
+                        "<a id ='del' class='btn btn-danger btn-sm'><i class='glyphicon glyphicon-trash'></i></a></div>",
+                        "width": "54px"
+                    }
 
                 ]
             });
+
+            function getImg(data) {
+                if (data) return '<img class="img-circle" style="width: 50px; height: auto" src="' + data + '"  />';
+                else return '<img class="img-circle" style="width: 50px; height: auto" src="/storage/img/avatars/empty.png" />';
+            }
+
             $('#datatable tbody').on('click', '[id*=edit]', function () {
                 var data = table.row($(this).parents('tr')).data();
                 var id = data.id;
@@ -62,13 +77,9 @@
                 var id = data.id;
                 window.location.href = "{{ route('employees') }}" + '/delete/' + id;
             });
+
         });
-
-
 
     </script>
 
-
 @endsection
-
-

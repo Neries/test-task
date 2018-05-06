@@ -5,9 +5,9 @@ use Faker\Factory as Faker;
 use  Illuminate\Database\Eloquent\Collection as Collection;
 
 
-class EmployeesTableSeader extends Seeder
+class EmployeesTableSeeder extends Seeder
 {
-    private $numberOfEmployees = 3000;
+    private $numberOfEmployees = 30;
     private $depth = 5;
     private $ids = [];
     private $suitableIds = [];
@@ -22,7 +22,7 @@ class EmployeesTableSeader extends Seeder
         //TODO: count of directors
         $faker = Faker::create('ru_RU');
 
-        $allGeneratedData = new Collection();
+        $allGeneratedData = \App\Employee::all();
 
         for ($i = 0; $i < $this->numberOfEmployees; $i++) {
             $gender = $faker->randomElements(['male', 'female'])[0];

@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->timestamp('employment_date');
             $table->decimal('salary',10,2);
             $table->integer('chief_id')->nullable()->default(null);
+            $table->string('avatar', 255)->nullable()->default(null);
         });
     }
 

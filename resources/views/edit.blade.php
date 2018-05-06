@@ -1,9 +1,10 @@
 @extends ('layouts.master')
 
+@section('style')
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"/>
+@endsection
+
 @section('content')
-
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
     <div id="form" class="container">
         <div class="row centered-form">
@@ -15,18 +16,21 @@
                     </div>
                     <div class="panel-body" style="background: #f9f9f9">
                         <form method="POST"
-                              action="{{ isset($employee) ? route('edit', ['id' => $employee->id]) : route('create') }}"
+                              action="{{ isset($employee) ? route('save', ['id' => $employee->id]) : route('save') }}"
                               enctype= "multipart/form-data">
 
                             {{ csrf_field() }}
 
+                            <input type="hidden" name="id" value="{{ $employee->id ?? '' }}">
+
+
                             <div class="form-group col-md-3">
                                 <div class="text-center">
-                                    <img id="blah" src="//placehold.it/200x200"
+                                    <img id="img" src="{{ $employee->avatar ?? '/storage/img/avatars/empty.png' }}"
                                          class="form-group img-thumbnail" style="max-width: 200px; max-height: 200px" alt="avatar">
 
                                     <label class="form-group btn-block btn btn-primary">
-                                        Upload photo <input type="file" id="imgInp" name="image"  hidden>
+                                        Upload photo <input type="file" id="imgInp" name="avatar"  hidden>
                                     </label>
                                 </div>
                             </div>
@@ -94,14 +98,17 @@
         </div>
     </div>
 
+@endsection
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+@section ('script')
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    $('#blah').attr('src', e.target.result);
+                    $('#img').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -119,9 +126,5 @@
             }
         });
     </script>
-
-
-
-
 
 @endsection

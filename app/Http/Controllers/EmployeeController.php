@@ -5,23 +5,11 @@ namespace App\Http\Controllers;
 use App\Employee;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 
 class EmployeeController extends Controller
 {
-
-    /**
-     * Display a listing of the employees.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function employeesList()
-    {
-        return view('employees');
-    }
-
 
     /**
      *TODO: write comment
@@ -30,12 +18,11 @@ class EmployeeController extends Controller
      */
     public function getEmployees()
     {
-        $query = Employee::select('id', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary');
+        $query = Employee::select('id', 'avatar', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary');
         return datatables($query)->make(true);
     }
 
     /**
-     *
      * Display a tree of the employees.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -45,43 +32,9 @@ class EmployeeController extends Controller
 //        $employees = Employee::all();
         $employees = Employee::limit(10)->get();
         $tree = $this->buildTree($employees);
+
         return view('tree', ['employees' => $tree]);
 
-    }
-
-
-
-    public function test(){
-//        $employees = Employee::all();
-//        $tree = $this->buildTree($employees);
-//        die("<pre>".print_r($tree,true)."</pre>");
-//        return json_encode($tree);
-
-        $rows = Employee::all()->toArray();
-       foreach ($rows as $row) {
-            $sub_data["id"] = $row["id"];
-            $sub_data["text"] = '<kbd>ФИО</kbd>'.
-                ' '. $row["last_name"] . ' ' . $row["first_name"] . ' ' . $row['patronymic'] .
-                ' '.'<kbd>должность</kbd><nobr class="text-primary">'.
-                ' '.$row['position'].'</nobr>';
-            $sub_data["parent_id"] = $row["chief_id"];
-            $data[] = $sub_data;
-        }
-        foreach ($data as $key => &$value) {
-            $output[$value["id"]] = &$value;
-        }
-        foreach ($data as $key => &$value) {
-            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
-                $output[$value["parent_id"]]["nodes"][] = &$value;
-            }
-        }
-        foreach ($data as $key => &$value) {
-            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
-                unset($data[$key]);
-            }
-        }
-
-        return $data;
     }
 
     /**
@@ -111,59 +64,43 @@ class EmployeeController extends Controller
         return $branch;
     }
 
-
     /**
-     * Show the form for creating a new resource
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function createForm()
-    {
-        return view('edit');
-    }
-
-    /**
-     * Creating a new employee
+     * TODO: validate
+     * Update or Creating a new employee
      *
      * @param Request $request
+     * @param null $id
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function create(Request $request)
+    public function createOrUpdate(Request $request, $id = null)
     {
 
 //        $this->validate($request, [
-//            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
 //        ]);
 
-        $file = $request->file('image');
+        $avatar = '';
 
-        $ext = $file->getClientOriginalName();
+        if ($request->file('avatar')) {
+            if ($id) @unlink(public_path(Employee::find($id)->avatar));
+            $file = $request->file('avatar');
+            $name = rand(1000, 999999) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/img/avatars/', $name);
+            $avatar = '/storage/img/avatars/' . $name;
+        };
 
-        $file->storeAs('/avatars',$ext);
+        Employee::updateOrCreate(['id' => $id], [
+            "last_name" => $request->last_name,
+            "first_name" => $request->first_name,
+            "patronymic" => $request->patronymic,
+            "position" => $request->position,
+            "employment_date" => $request->employment_date,
+            "salary" => $request->salary,
+            "chief_id" => $request->chief_id,
+            "avatar" => $avatar
+        ]);
 
-//        if ($request->file('image')) {
-//            if ($oldImage = Model::find($itemId)->image) {
-//                if(file_exists($oldImage)) @unlink($oldImage);
-//            }
-//            $extension = $request->file('image')->getClientOriginalExtension();
-//            $imageName = rand(1000, 999999).'_'.time().'.'.$extension;
-//            if (!is_dir("img/{$this->getPrefix()}")) mkdir("img/{$this->getPrefix()}");
-//            $request->file('image')->move(base_path() . "/public/img/{$this->getPrefix()}/", $imageName);
-//            $data['image'] = "img/{$this->getPrefix()}/$imageName";
-//        }
-
-
-//        if ($request->hasFile('image')) {
-//            dd('DONE');
-//            $image = $request->file('image');
-//            $name = time().'.'.$image->getClientOriginalExtension();
-//            $destinationPath = public_path('/images');
-//            $image->move($destinationPath, $name);
-//            $this->save();
-//
-//        }
-//        Employee::create($request   ->all());
-//        return redirect('employees');
+        return redirect('employees');
     }
 
 
@@ -173,7 +110,7 @@ class EmployeeController extends Controller
      * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editForm($id)
     {
         $worker = Employee::find($id);
         $data = ['employee' => $worker];
@@ -182,20 +119,6 @@ class EmployeeController extends Controller
         }
 
         return view('edit', $data);
-    }
-
-    /**
-     * Update specified resource in storage
-     *
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function update(Request $request, $id)
-    {
-        Employee::find($id)->update($request->all());
-
-        return redirect('employees');
     }
 
 
@@ -221,7 +144,7 @@ class EmployeeController extends Controller
     {
         $children = $employee->children();
         $randomChiefs = Employee::inRandomOrder()->take($children->count())->get();
-        $children->each(function($child, $key) use ($randomChiefs) {
+        $children->each(function ($child, $key) use ($randomChiefs) {
             $child->update(['chief_id' => $randomChiefs[$key]->id]);
         });
     }
@@ -259,10 +182,45 @@ class EmployeeController extends Controller
     private function prepareDropdownName($data)
     {
         return "$data[last_name] " .
-            mb_substr($data['first_name'], 0, 1) . "." . mb_substr($data['patronymic'], 0, 1 ) .
+            mb_substr($data['first_name'], 0, 1) . "." . mb_substr($data['patronymic'], 0, 1) .
             ", $data[position]";
     }
 
 
+    public function test()
+    {
+//        $employees = Employee::all();
+//        $tree = $this->buildTree($employees);
+//        die("<pre>".print_r($tree,true)."</pre>");
+//        return json_encode($tree);
+
+        $rows = Employee::all()->toArray();
+        foreach ($rows as $row) {
+            $sub_data["id"] = $row["id"];
+//            $sub_data["text"] = '<kbd>ФИО</kbd>' .
+//                ' ' . $row["last_name"] . ' ' . $row["first_name"] . ' ' . $row['patronymic'] .
+//                ' ' . '<kbd>должность</kbd><nobr class="text-primary">' .
+//                ' ' . $row['position'] . '</nobr>';
+            $sub_data["text"] = $row['first_name'];
+            $sub_data["parent_id"] = $row["chief_id"];
+            $data[] = $sub_data;
+        }
+        foreach ($data as $key => &$value) {
+            $output[$value["id"]] = &$value;
+        }
+        foreach ($data as $key => &$value) {
+            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
+                $output[$value["parent_id"]]["nodes"][] = &$value;
+            }
+        }
+        foreach ($data as $key => &$value) {
+            if ($value["parent_id"] && isset($output[$value["parent_id"]])) {
+                unset($data[$key]);
+            }
+        }
+
+dd($data);
+        return $data;
+    }
 
 }
