@@ -15,7 +15,6 @@ Route::view('/', 'tree')->name('home');
 Route::post('/', 'EmployeeController@tree')->name('treeView');
 
 Auth::routes();
-Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/employees', 'employees')->name('employees');
