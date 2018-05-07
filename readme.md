@@ -20,7 +20,7 @@ composer install
 и изменитеь данные БД в файле и сгенерировать ключ командой:
 
 ```javascript
-php artisan key:gen
+php artisan key:generate
 ```
 Cоздать символьную ссылку из public/storage на storage/app/public
 
