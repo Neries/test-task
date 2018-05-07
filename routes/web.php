@@ -32,8 +32,3 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/employees/search', 'EmployeeController@search')->name('filterEmployees');
 });
-
-
-
-
-

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+
     /**
      * Prepares and returns
      * array for treeview
@@ -39,6 +40,7 @@ class EmployeeController extends Controller
                 unset($data[$key]);
             }
         }
+
         return $data;
     }
 
@@ -50,6 +52,7 @@ class EmployeeController extends Controller
     public function getEmployees()
     {
         $query = Employee::select('id', 'avatar', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary');
+
         return datatables($query)->make(true);
     }
 

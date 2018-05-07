@@ -7,7 +7,7 @@ use  Illuminate\Database\Eloquent\Collection as Collection;
 
 class EmployeesTableSeeder extends Seeder
 {
-    private $numberOfEmployees = 50000;
+    private $numberOfEmployees = 50;
     private $depth = 5;
     private $ids = [];
     private $suitableIds = [];
@@ -77,6 +77,7 @@ class EmployeesTableSeeder extends Seeder
             $countHierarchies++;
             $countHierarchies = $this->countDepth($chiefId, $countHierarchies);
         }
+
         return $countHierarchies;
     }
 }
