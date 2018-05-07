@@ -7,14 +7,16 @@
 
 ## Установка
 
+Скопировать проект в текущий каталог
 
 ```javascript
 git clone https://github.com/Neries/test-task.git .
 ```
+
 ```javascript
 composer install
 ```
-Затем переименовать .env.example на  .env
+Затем скопировать .env.example с именем .env
 и изменитеь данные БД в файле и сгенерировать ключ командой:
 
 ```javascript
@@ -25,7 +27,10 @@ Cоздать символьную ссылку из public/storage на storage
 ```javascript
 php artisan storage:link
 ```
-
+Заполнить базу данных
+```javascript
+php artisan migrate --seed
+```
 Если вы хотите использовать встроенный в PHP сервер для разработки, вы можете использовать команду: 
 
 ```javascript
@@ -34,5 +39,5 @@ php artisan serve
 
 ## Настройка
 
-Количество сгенерированных сотрудников (изначально 50 000) и уровни иерархий можно изметить отредактировав свойтсва $numberOfEmployees и $depth
+Количество сгенерированных сотрудников (изначально 50 000) и уровни иерархий можно изменить, отредактировав свойтсва $numberOfEmployees и $depth
 в /database/seeds/EmployeesTableSeeder.php
