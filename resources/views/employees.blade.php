@@ -11,7 +11,7 @@
         <thead>
         <tr class="info">
             <th>ID</th>
-            <th>Foto</th>
+            <th>Photo</th>
             <th>Last name</th>
             <th>First name</th>
             <th>Patronymic</th>
