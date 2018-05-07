@@ -9,7 +9,6 @@ class Employee extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-
     public function children() {
         return $this->hasMany(static::class, 'chief_id')->orderBy('id', 'asc');
     }

@@ -1,36 +1,38 @@
 @extends ('layouts.master')
 
+@section ('style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.css" />
+@endsection
+
 @section ('content')
 
 
-    <div class="container">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>Employees List</h1>
-                    <ul id="tree1">
-                    @foreach($employees as $i => $employee)
-                            <li style="list-style-type: none">
-                                <div class="list-group-item flex-column align-items-start">
-                                    <div  class="list-group-item" data-id="{{ $employee->id }}">
-                                        <kbd>ФИО</kbd>
-                                        {{ ' '.$employee->last_name.' '.$employee->first_name.' '.$employee->patronymic }}
-                                        <br>
-                                        <kbd>должность</kbd>
-                                        <nobr class="text-primary"> {{ ' '.$employee->position }} </nobr>
-                                    </div>
-
-                                    @if(!empty($employee->children))
-                                    @include('branch',['children' => $employee->children])
-                                    @endif
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <div class="container" style="width:900px;">
+        <br>
+        <div id="treeview"></div>
     </div>
 
+
+@endsection
+
+@section ('script')
+
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-treeview/1.2.0/bootstrap-treeview.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: "{{ route('treeView') }}",
+                method:"POST",
+                dataType: "json",
+                data: {"_token": "{{ csrf_token() }}"},
+                success: function(data)
+                {
+                    $('#treeview').treeview({data: data});
+                }
+            });
+
+        });
+    </script>
 
 @endsection

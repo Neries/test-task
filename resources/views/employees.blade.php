@@ -29,11 +29,10 @@
 @endsection
 
 @section ('script')
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 
     <script>
-
         $(document).ready(function () {
             var table = $('#datatable').DataTable({
                 processing: true,
@@ -63,7 +62,7 @@
 
             function getImg(data) {
                 if (data) return '<img class="img-circle" style="width: 50px; height: auto" src="' + data + '"  />';
-                else return '<img class="img-circle" style="width: 50px; height: auto" src="/storage/img/avatars/empty.png" />';
+                else return '<img class="img-circle" style="width: 50px; height: auto" src="//via.placeholder.com/50x50" />';
             }
 
             $('#datatable tbody').on('click', '[id*=edit]', function () {

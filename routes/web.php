@@ -12,10 +12,11 @@
 */
 
 
-Route::get('/', 'EmployeeController@tree')->name('home');
-Route::post('/', 'EmployeeController@getChild')->name('child');
+Route::view('/', 'tree')->name('home');
+Route::post('/', 'EmployeeController@tree')->name('treeView');
 
-
+Auth::routes();
+Route::get('/home', 'HomeController@index');
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -32,16 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/employees/search', 'EmployeeController@search')->name('filterEmployees');
 });
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index');
-
-
-
-
-Route::view('/test', 'test');
-
-Route::post('/test', 'EmployeeController@test')->name('test');
 
 
 

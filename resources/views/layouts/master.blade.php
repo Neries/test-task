@@ -2,15 +2,14 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Employees</title>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <title>{{ config('app.name', 'Employee') }}</title>
+    <link rel="shortcut icon" href="https://png.icons8.com/ios/50/000000/business.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-
-    <link href="{{ asset('css/treeview.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    @yield ('style')
 
+    @yield ('style')
 
 </head>
 <body>
@@ -28,7 +27,7 @@
 </div>
 
 @include ('layouts.footer')
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 @yield ('script')
 </body>

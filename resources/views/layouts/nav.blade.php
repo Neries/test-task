@@ -12,7 +12,7 @@
                 <li><a href="{{ route('createForm') }}">
                         <span class="glyphicon  glyphicon-plus" aria-hidden="true"></span> Create</a></li>
 
-                <li><a href="#"><span class="fa fa-envelope-o"></span> Contact</a></li>
+                <li><a href="//www.work.ua/resumes/4774041/"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
 
 
             </ul>
@@ -25,9 +25,9 @@
             @else
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"
+                        <a href="#" class="dropdown-toggle glyphicon glyphicon-log-out" data-toggle="dropdown" role="button" aria-expanded="false"
                            aria-haspopup="true" v-pre>
-                            {{ Auth::user()->name }} <span class="caret"></span>
+                            <h7>{{ Auth::user()->name }}</h7> <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu">

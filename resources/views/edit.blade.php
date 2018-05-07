@@ -1,10 +1,11 @@
 @extends ('layouts.master')
 
-@section('style')
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"/>
+@section ('style')
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 @endsection
 
 @section('content')
+
 
     <div id="form" class="container">
         <div class="row centered-form">
@@ -17,7 +18,7 @@
                     <div class="panel-body" style="background: #f9f9f9">
                         <form method="POST"
                               action="{{ isset($employee) ? route('save', ['id' => $employee->id]) : route('save') }}"
-                              enctype= "multipart/form-data">
+                              enctype="multipart/form-data">
 
                             {{ csrf_field() }}
 
@@ -26,11 +27,12 @@
 
                             <div class="form-group col-md-3">
                                 <div class="text-center">
-                                    <img id="img" src="{{ $employee->avatar ?? '/storage/img/avatars/empty.png' }}"
-                                         class="form-group img-thumbnail" style="max-width: 200px; max-height: 200px" alt="avatar">
+                                    <img id="img" src="{{ $employee->avatar ?? '//via.placeholder.com/200x200' }}"
+                                         class="form-group img-thumbnail" style="max-width: 200px; max-height: 200px"
+                                         alt="avatar">
 
                                     <label class="form-group btn-block btn btn-primary">
-                                        Upload photo <input type="file" id="imgInp" name="avatar"  hidden>
+                                        Upload photo <input type="file" id="imgInp" name="avatar" hidden>
                                     </label>
                                 </div>
                             </div>
@@ -66,7 +68,7 @@
                                 <label for="employment_date_id" class="control-label">Employment Date</label>
                                 <input type="datetime-local" class="form-control" id="employment_date_id"
                                        name="employment_date" placeholder="1999-12-31T23:59:59"
-                                       value="{{ isset($employee) ? date('Y-m-d\TH:i:s', strtotime($employee->employment_date)) : ''}}"
+                                       value="{{ isset($employee) ? date('Y-m-d\TH:i', strtotime($employee->employment_date)) : ''}}"
                                        required>
                             </div>
 
@@ -80,7 +82,7 @@
 
                             <div class="form-group col-xs-8"> <!-- Chief_Id -->
                                 <label for="chief_id" class="control-label">Chief</label>
-                                <select class="form-control chief-list-ajax" id="chief_id"  name="chief_id">
+                                <select class="form-control chief-list-ajax" id="chief_id" name="chief_id">
                                     @if(!empty($chief))
                                         <option value="{{ $chief['id'] }}">{{ $chief['text'] }}</option>
                                     @endif
@@ -98,22 +100,25 @@
         </div>
     </div>
 
+
+
 @endsection
 
-@section ('script')
+@section('script')
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     $('#img').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        $("#imgInp").change(function() {
+
+        $("#imgInp").change(function () {
             readURL(this);
         });
 
