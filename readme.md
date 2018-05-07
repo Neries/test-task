@@ -7,10 +7,12 @@
 
 ## Установка
 
+Скопировать проект в текущий каталог
 
 ```javascript
 git clone https://github.com/Neries/test-task.git .
 ```
+
 ```javascript
 composer install
 ```
@@ -25,7 +27,10 @@ Cоздать символьную ссылку из public/storage на storage
 ```javascript
 php artisan storage:link
 ```
-
+Заполнить базу данных
+```javascript
+php artisan migrate --seed
+```
 Если вы хотите использовать встроенный в PHP сервер для разработки, вы можете использовать команду: 
 
 ```javascript
