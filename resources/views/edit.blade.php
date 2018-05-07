@@ -27,7 +27,7 @@
 
                             <div class="form-group col-md-3">
                                 <div class="text-center">
-                                    <img id="img" src="{{ $employee->avatar ?? '//via.placeholder.com/200x200' }}"
+                                    <img id="img" src="{{ $employee->avatar ?? asset('img/full.png') }}"
                                          class="form-group img-thumbnail" style="max-width: 200px; max-height: 200px"
                                          alt="avatar">
 

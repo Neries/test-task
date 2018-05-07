@@ -11,13 +11,11 @@
 |
 */
 
-
 Route::view('/', 'tree')->name('home');
 Route::post('/', 'EmployeeController@tree')->name('treeView');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index');
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/employees', 'employees')->name('employees');
@@ -28,7 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/employees/edit/{id?}', 'EmployeeController@createOrUpdate')->where(['id' => '[0-9]+'])->name('save');
 
     Route::get('/employees/delete/{id}', 'EmployeeController@delete')->where(['id' => '[0-9]+'])->name('delete');
-
 
     Route::get('/employees/search', 'EmployeeController@search')->name('filterEmployees');
 });

@@ -62,19 +62,19 @@
 
             function getImg(data) {
                 if (data) return '<img class="img-circle" style="width: 50px; height: auto" src="' + data + '"  />';
-                else return '<img class="img-circle" style="width: 50px; height: auto" src="//via.placeholder.com/50x50" />';
+                else return '<img class="img-circle" style="width: 50px; height: auto" src="img/min.png" />';
             }
 
             $('#datatable tbody').on('click', '[id*=edit]', function () {
                 var data = table.row($(this).parents('tr')).data();
                 var id = data.id;
-                window.location.href = "{{ route('employees') }}" + '/edit/' + id;
+                window.location.href = 'employees/edit/' + id;
             });
 
             $('#datatable tbody').on('click', '[id*=del]', function () {
                 var data = table.row($(this).parents('tr')).data();
                 var id = data.id;
-                window.location.href = "{{ route('employees') }}" + '/delete/' + id;
+                window.location.href = 'employees/delete/' + id;
             });
 
         });

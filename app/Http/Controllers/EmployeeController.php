@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-
     /**
      * Prepares and returns
      * array for treeview
@@ -94,7 +93,6 @@ class EmployeeController extends Controller
         return redirect('employees');
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -112,7 +110,6 @@ class EmployeeController extends Controller
         return view('edit', $data);
     }
 
-
     /**
      * TODO : to forbid to delete first chief
      * Remove employee
@@ -128,21 +125,6 @@ class EmployeeController extends Controller
 
         return redirect('employees');
     }
-
-    /**
-     * Redistribute employees after delete chief
-     *
-     * @param Employee $employee
-     */
-    private function redistributeChildren(Employee $employee)
-    {
-        $children = $employee->children();
-        $randomChiefs = Employee::inRandomOrder()->take($children->count())->get();
-        $children->each(function ($child, $key) use ($randomChiefs) {
-            $child->update(['chief_id' => $randomChiefs[$key]->id]);
-        });
-    }
-
 
     /**
      * TODO: to forbid to make himself chief
@@ -187,4 +169,18 @@ class EmployeeController extends Controller
             ".($data[position])";
     }
 
+    /**
+     * Redistribute employees after delete chief
+     *
+     * @param Employee $employee
+     */
+    private function redistributeChildren(Employee $employee)
+    {
+        $children = $employee->children();
+        $randomChiefs = Employee::inRandomOrder()->take($children->count())->get();
+        $children->each(function ($child, $key) use ($randomChiefs) {
+            $child->update(['chief_id' => $randomChiefs[$key]->id]);
+        });
+    }
 }
+
